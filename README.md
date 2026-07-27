@@ -7,8 +7,10 @@ doing: jobs and paychecks, taxes, banking, budgeting, credit cards and credit
 scores, debt, high-yield savings, and retirement. Make great decisions or
 terrible ones; here, the mistakes are free and the lessons stick.
 
-No accounts. No real money. No servers. Your run lives entirely in your
-browser's local storage.
+No real money. No servers to run. Your run lives in your browser's local
+storage by default; an optional account (email link or Google) syncs it
+across devices. See [privacy.html](privacy.html) for exactly what that
+stores, which is your email and your game save, and nothing else.
 
 ## Two ways to play
 
@@ -87,10 +89,13 @@ Project layout:
 
 ```
 index.html            app shell
+privacy.html          privacy policy (required by the optional accounts)
 css/styles.css        design system (light/dark, responsive)
 js/engine/            pure simulation logic, no DOM, fully unit tested
 js/ui/                views (dashboard, job, budget, bank, learn, settings)
 js/state.js           state shape + localStorage persistence
+js/config.js          optional cloud-sync keys (safe to publish)
+js/cloud.js           optional Supabase auth + save sync, lazily loaded
 data/                 jobs, life events, glossary (browser ES modules)
 tests/js/             engine unit tests (node:test)
 tests/python/         data integrity tests (pytest)
