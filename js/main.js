@@ -33,6 +33,9 @@ import { showMonthReport } from './ui/reportModal.js';
 import { showOffer } from './ui/offerModal.js';
 import { renderHud } from './ui/hud.js';
 import { completeStep } from './ui/guide.js';
+import { cloudEnabled } from './config.js';
+import { initAuth, onAuthChange, currentUser, pullSave, pushSave, compareSaves } from './cloud.js';
+import { resolveConflict, noteSynced } from './ui/accountCard.js';
 
 const VIEWS = [
   { id: 'dashboard', label: 'Home', ic: 'home', render: renderDashboard },
@@ -62,6 +65,21 @@ const appRoot = document.getElementById('app');
 const savedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('crash-cash-theme') : null;
 if (savedTheme) document.documentElement.dataset.theme = savedTheme;
 
+/*
+ * Cloud sync, when a player has chosen to sign in. Local storage is always
+ * written first and stays the source of truth; the cloud copy trails it by
+ * a few seconds so a burst of clicks is one upload, not twenty.
+ */
+let syncTimer = null;
+function scheduleSync() {
+  if (!cloudEnabled() || !currentUser() || !state) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(async () => {
+    const res = await pushSave(state);
+    if (res.ok) { noteSynced(res.at); renderApp(); }
+  }, 3000);
+}
+
 const ctx = {
   get state() { return state; },
   update(fn) {
@@ -69,6 +87,7 @@ const ctx = {
     fn(draft);
     state = draft;
     saveState(state);
+    scheduleSync();
     renderApp();
   },
   replaceState(next) {
@@ -95,6 +114,7 @@ const ctx = {
       if (res.report.goal && res.report.goal.justCompleted) goalCelebration = res.report.goal;
     }
     saveState(state);
+    scheduleSync();
     renderApp();
     if (!lastReport) return;
 
@@ -207,3 +227,30 @@ function renderApp() {
 }
 
 renderApp();
+
+/*
+ * Optional cloud sync. None of this runs (or downloads anything) unless the
+ * deployment has cloud enabled in config.js, and a signed-out player is
+ * completely unaffected either way.
+ */
+if (cloudEnabled()) {
+  initAuth().then((session) => {
+    if (session) renderApp();
+    onAuthChange(async (next) => {
+      renderApp();
+      if (!next) return;
+      /* Just signed in: reconcile the run here with the one in the cloud. */
+      const res = await pullSave();
+      if (!res.ok) return;
+      const verdict = compareSaves(state, res.state);
+      if (verdict === 'use-cloud') {
+        ctx.replaceState(res.state);
+      } else if (verdict === 'use-local' && state) {
+        const push = await pushSave(state);
+        if (push.ok) { noteSynced(push.at); renderApp(); }
+      } else if (verdict === 'conflict') {
+        resolveConflict(ctx, res.state, res.updatedAt);
+      }
+    });
+  });
+}

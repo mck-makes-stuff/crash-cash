@@ -7,6 +7,7 @@
 import { el, segmented, pill, openModal, closeBtn, flash } from './components.js';
 import { icon } from './icons.js';
 import { guideBanner, toolsStepButton } from './guide.js';
+import { renderAccountCard } from './accountCard.js';
 import { DIFFICULTIES, exportState, importState, currentAge } from '../state.js';
 import { challengesForAge, startChallenge, CHALLENGES } from '../engine/goals.js';
 import { toCents, MONTH_NAMES } from '../engine/format.js';
@@ -20,6 +21,7 @@ export function renderSettingsView(ctx) {
     renderRatesLab(ctx),
     renderSandboxTools(ctx),
     renderSaveData(ctx),
+    renderAccountCard(ctx),
     toolsStepButton(ctx),
     renderAbout(),
   );
