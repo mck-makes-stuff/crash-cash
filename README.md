@@ -111,7 +111,8 @@ See [PLAN.md](PLAN.md) for the product plan and
 Crash Cash simplifies on purpose: single filer, 2025 tax rules every year,
 flat state tax, one statement a month, a simplified score model, steady
 investment returns. The Learn tab discloses all of it in-app. Nothing here is
-financial advice; it is a place to build intuition safely.
+financial advice; it is a place to build intuition safely. Built in collaboration 
+with Claude Code. Simulation design, tax and credit modeling, and product decisions are mine.
 
 ## License
 
