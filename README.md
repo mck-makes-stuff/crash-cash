@@ -1,4 +1,5 @@
-# 💥 Crash Cash
+# Crash Cash
+Explored agentic code by collaborating with Claude Code on this repository.
 
 **Crash-test your money.**
 
@@ -7,10 +8,9 @@ doing: jobs and paychecks, taxes, banking, budgeting, credit cards and credit
 scores, debt, high-yield savings, and retirement. Make great decisions or
 terrible ones; here, the mistakes are free and the lessons stick.
 
-No real money. No servers to run. Your run lives in your browser's local
-storage by default; an optional account (email link or Google) syncs it
-across devices. See [privacy.html](privacy.html) for exactly what that
-stores, which is your email and your game save, and nothing else.
+Your run lives in your browser's local
+storage by default; see [privacy.html](privacy.html) for exactly what that
+stores, which is your email (optional) and your game save, and nothing else.
 
 ## Two ways to play
 
