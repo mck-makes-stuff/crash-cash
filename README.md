@@ -94,7 +94,7 @@ css/styles.css        design system (light/dark, responsive)
 js/engine/            pure simulation logic, no DOM, fully unit tested
 js/ui/                views (dashboard, job, budget, bank, learn, settings)
 js/state.js           state shape + localStorage persistence
-js/config.js          optional cloud-sync keys (safe to publish)
+js/config.js          Supabase project URL + public anon key (safe to publish)
 js/cloud.js           optional Supabase auth + save sync, lazily loaded
 data/                 jobs, life events, glossary (browser ES modules)
 tests/js/             engine unit tests (node:test)
