@@ -1,5 +1,5 @@
 # Crash Cash
-Explored agentic code by collaborating with Claude Code on this repository.
+[Live GitHub Pages Site](https://mck-makes-stuff.github.io/crash-cash/)
 
 **Crash-test your money.**
 
